@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import { useReducer } from "react";
+import Layout from "./layout";
+import { Routes, Route } from "react-router-dom";
+import TasksList from "./pages/TasksList";
+import CreateTask from "./pages/CreateTask";
+import { ListContext, TasksContextData, reducer } from "./context/ListContext";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [contextState, contextDispatch] = useReducer(reducer, TasksContextData);
+	return (
+		<div className="App">
+			<ListContext.Provider value={{contextState,contextDispatch}}>
+				<Layout>
+					<Routes>
+						<Route path="/" element={<TasksList />} />
+						<Route path="/create-task" element={<CreateTask />} />
+					</Routes>
+				</Layout>
+			</ListContext.Provider>
+		</div>
+	);
 }
 
 export default App;
